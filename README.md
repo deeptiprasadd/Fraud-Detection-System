@@ -1,121 +1,139 @@
-# Fraud Detection System – Code Flow Documentation
+Fraud-Detection-System-App
 
-Project Overview:
+Full Guide
 ================================
 
-This project builds a web-based fraud detection tool using Streamlit and a Random Forest Classifier. The model is trained on financial transaction data and includes real-time prediction capabilities, model evaluation metrics, and interactive data inputs.
-------------------------------
-System Flow Diagram (Text Representation)
+Part 1: How to Use the Fraud Detection App
+------------------------------------------
 
- ┌──────────────────────┐
- │  Load Libraries      │
- └────────┬─────────────┘
-          │
- ┌────────▼─────────────┐
- │  Streamlit Setup     │
- └────────┬─────────────┘
-          │
- ┌────────▼──────────────────────────┐
- │ Load + Preprocess Dataset         │
- │ - Handle missing values           │
- │ - Scale amount using RobustScaler │
- │ - Encode categorical features     │
- │ - Engineer new features           │
- └────────┬──────────────────────────┘
-          │
- ┌────────▼──────────────────────────────┐
- │ Train Model (Random Forest)           │
- │ - Sample data                         │
- │ - Scale features with StandardScaler  │
- │ - Apply SMOTE for class balancing     │
- │ - Train Random Forest Classifier      │
- └────────┬──────────────────────────────┘
-          │
- ┌────────▼──────────────┐
- │  UI Components        │
- │  - Dataset preview    │
- │  - Metrics summary    │
- │  - Sample predictions │
- │  - Custom prediction  │
- │  - Model evaluation   │
- └────────┬──────────────┘
-          │
- ┌────────▼──────────────┐
- │   Output Predictions  │
- └───────────────────────┘
+Step 1: Open the Streamlit App
+- Run the fraud_detection_App.py file using Streamlit
+- Command: streamlit run fraud_detection_App.py
+- The app will open in your default browser
 
- ------------------------------
+Step 2: Explore Dataset
+- Scroll down to see the top 10 rows from the dataset
+- Useful for understanding the structure and fields
 
-Code Flow in Structured Pointers
-1. Library Imports and UI Setup
-Imports required libraries: pandas, numpy, scikit-learn, imblearn, streamlit, matplotlib, seaborn.
+Step 3: Check Summary Statistics
+- Displays:
+  - Total fraudulent transactions
+  - Overall fraud rate in percentage
 
-Configures the Streamlit app layout and sidebar.
+Step 4: View Sample Predictions
+- Shows two sample transactions
+- Automatically calculates and shows fraud probabilities
 
-2. Data Loading and Preprocessing
-Reads transaction data from Fraud.csv.
+Step 5: Make a Custom Prediction
+- Enter values in the form:
+  - Step
+  - Transaction Type (TRANSFER, CASH_OUT, etc.)
+  - Old/New balances for sender and receiver
+- Click Predict to view fraud probability
 
-Handles missing values in nameDest, oldbalanceDest, and newbalanceDest.
+Step 6: Analyze Model Evaluation
+- Expand the "Show Model Evaluation" section
+- Includes:
+  - Confusion Matrix
+  - ROC Curve
+  - Precision-Recall Curve
+  - Feature Importance
+  - Class Distribution
 
-Scales the amount column using RobustScaler.
+Part 2: How to Run or Deploy the App
+------------------------------------
 
-Encodes type using categorical codes.
+Step 1: Install Dependencies
+- Run: pip install -r requirements.txt
 
-Engineers new features:
+Step 2: Run the App Locally
+- Run: streamlit run fraud_detection_App.py
 
-balanceChangeOrig = oldbalanceOrg - newbalanceOrig
+Step 3: Deploy the App (Optional)
+- Use platforms like Streamlit Cloud
+- Make sure Fraud.csv is in the same folder
 
-balanceChangeDest = newbalanceDest - oldbalanceDest
+Part 3: Workflow Diagram (Code Flow)
+------------------------------------
 
-Drops unnecessary columns such as nameOrig, nameDest, and original amount.
+[fraud_detection_App.py]
+↓
+Streamlit UI Setup
+↓
+load_data_and_amount_scaler() → Loads and preprocesses CSV data
+↓
+train_model() → Trains Random Forest model after sampling, scaling, and SMOTE
+↓
+Model and scalers returned
+↓
+UI Renders:
+  - Dataset preview
+  - Fraud metrics
+  - Sample predictions
+  - Custom prediction form
+  - Evaluation plots
 
-3. Model Training Pipeline
-Uses 5% of the dataset to optimize speed.
+Part 4: Function Descriptions
+-----------------------------
 
-Splits the data into training and testing sets.
+1. load_data_and_amount_scaler()
+- Reads data from Fraud.csv
+- Fills missing values
+- Scales amount using RobustScaler
+- Adds balanceChangeOrig and balanceChangeDest features
+- Encodes type using numerical labels
+- Drops unnecessary columns
 
-Scales features using StandardScaler.
+2. train_model()
+- Uses 5% sampled data
+- Splits data into train and test sets
+- Scales features using StandardScaler
+- Applies SMOTE for class balancing
+- Trains RandomForestClassifier
+- Returns model, scalers, feature names, and test set
 
-Applies SMOTE to balance imbalanced class distribution.
+3. Sample Prediction Block
+- Creates two example transactions
+- Transforms and scales them
+- Predicts fraud probability using the trained model
+- Displays results in a table
 
-Trains a Random Forest Classifier with controlled depth and estimators.
+4. Custom Input Form
+- Uses Streamlit form to accept transaction data
+- Calculates balance changes
+- Scales and formats features
+- Predicts and displays fraud probability
 
-4. Dataset Preview and Fraud Metrics
-Displays the top 10 records from the preprocessed dataset.
+5. Evaluation Visualizations
+- Confusion Matrix: True/False Positives and Negatives
+- ROC Curve: AUC vs FPR
+- Precision-Recall Curve: Important for imbalanced classes
+- Feature Importance: Bar chart of top 10 influential features
+- Class Distribution: Graph of fraud vs legit transaction count
 
-Computes:
+Part 5: Key Components and Files
+--------------------------------
 
-Total fraudulent transactions.
+File: fraud_detection_App.py
+- Main application logic
 
-Overall fraud rate.
+File: Fraud.csv
+- Dataset used for training and predictions
 
-5. Sample Predictions
-Manually defines two sample transaction scenarios.
+Libraries Used:
+- streamlit
+- pandas
+- numpy
+- sklearn
+- imblearn
+- matplotlib
+- seaborn
 
-Processes and scales the input using previously fitted scalers.
+Part 6: Notes
+-------------
 
-Predicts fraud probability and displays formatted output.
-
-6. Custom User Input Prediction
-Interactive form using Streamlit widgets.
-
-Users input transaction details like step, type, balances.
-
-Data is transformed and scaled.
-
-Model returns the predicted fraud probability.
-
-Results are shown along with the structured input.
-
-7. Model Evaluation and Visualization
-Optionally displays detailed evaluation via expanders:
-
-Confusion Matrix
-
-ROC Curve
-
-Precision-Recall Curve
-
-Feature Importance (Bar Chart)
-
-Class Distribution (Legit vs Fraud)
+- Caching is used to optimize performance
+- Sampling speeds up training without losing accuracy
+- SMOTE ensures balanced class representation
+- This project can be extended using other ML models (XGBoost, LightGBM)
+- Ideal for academic demonstration or internship deployment
