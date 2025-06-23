@@ -1,6 +1,4 @@
-# Fraud-Detection-System-App
-
-Full Guide
+# Fraud Detection System App - Full Guide
 ================================
 
 Part 1: How to Use the Fraud Detection App
