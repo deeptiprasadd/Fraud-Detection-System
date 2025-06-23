@@ -127,11 +127,4 @@ Libraries Used:
 - matplotlib
 - seaborn
 
-Part 6: Notes
--------------
 
-- Caching is used to optimize performance
-- Sampling speeds up training without losing accuracy
-- SMOTE ensures balanced class representation
-- This project can be extended using other ML models (XGBoost, LightGBM)
-- Ideal for academic demonstration or internship deployment
